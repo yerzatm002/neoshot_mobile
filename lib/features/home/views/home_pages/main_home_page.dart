@@ -43,6 +43,8 @@ class _MainHomePageState extends State<MainHomePage> {
               body: Container(
                       padding: const EdgeInsets.all(20),
                       child: ListView(
+                        // shrinkWrap: true,
+                        //   physics: const ClampingScrollPhysics(),
                           physics: const BouncingScrollPhysics(),
                           children: [
                             Column(
@@ -218,6 +220,7 @@ class _MainHomePageState extends State<MainHomePage> {
                             builder: (context, state){
                               postBloc = BlocProvider.of<PostBloc>(context);
                               if (state is PostInitial) {
+                                postBloc.add(PostLoadEvent());
                                 return Container();
                               }
                               if (state is PostLoadingState) {
@@ -237,18 +240,25 @@ class _MainHomePageState extends State<MainHomePage> {
 
                               if(state is PostLoadedState){
                                 return ListView.builder(
+                                  shrinkWrap: true,
+                                    physics: const ClampingScrollPhysics(),
                                     itemCount: state.posts.length,
                                     itemBuilder: (context, index){
                                       print(state.posts[index].fimage);
-                                      return Container(
-                                        width:  40,
-                                        height: 180,
-                                        decoration: BoxDecoration(
-                                          color: Colors.white60,
-                                          borderRadius: BorderRadius.circular(15),
-                                          image: DecorationImage(
-                                            image: NetworkImage(state.posts[index].fimage),
-                                            fit: BoxFit.fill,
+                                      return Padding(
+                                        padding: const EdgeInsets.symmetric(vertical: 10.0),
+                                        child: Container(
+                                          width:  40,
+                                          height: 180,
+                                          decoration: BoxDecoration(
+                                            color: Colors.white60,
+                                            borderRadius: BorderRadius.circular(15),
+                                            image: DecorationImage(
+                                              image: NetworkImage(state.posts[index].fimage),
+
+                                              /// Change from Fill to Cover
+                                              fit: BoxFit.cover,
+                                            ),
                                           ),
                                         ),
                                       );

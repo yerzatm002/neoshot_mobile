@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:image_picker/image_picker.dart';
@@ -84,9 +83,15 @@ class PostService{
       );
       print(response);
       if (response.body.isNotEmpty) {
-        final result = postModelFromJson(response.body);
-        posts.addAll(result.content);
-        return posts;
+        /// TODO: need implement post page generator
+        // final result = postModelFromJson(response.body);
+        // posts.addAll(result.content);
+
+        /// Parse to Post model
+        PostModel postModel = PostModel.fromJson(jsonDecode(response.body));
+
+        /// Return List of [Post] from [PostModel]
+        return postModel.content;
       } else {
         throw Exception('Failed to load post');
       }

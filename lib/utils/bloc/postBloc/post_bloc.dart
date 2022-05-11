@@ -16,14 +16,12 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     on<PostEvent>((event, emit) async{
       if(event is PostLoadEvent){
         final List<Post> posts;
-        if(event is PostLoadEvent) {
-          emit(PostLoadingState());
-          try {
-            posts = (await postRepository.getPosts())!;
-            return emit(PostLoadedState(posts: posts));
-          } catch(exception) {
-            return emit(PostErrorState());
-          }
+        emit(PostLoadingState());
+        try {
+          posts = (await postRepository.getPosts())!;
+          return emit(PostLoadedState(posts: posts));
+        } catch(exception) {
+          return emit(PostErrorState());
         }
       }
     });
